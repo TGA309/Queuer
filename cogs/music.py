@@ -13,6 +13,10 @@ import youtube_dl
 from youtube_dl import YoutubeDL
 from main import bot
 
+#loop = False
+
+stop = False
+
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -301,6 +305,27 @@ class Music(commands.Cog):
                 await ctx.invoke(self.leave_)
                 await ctx.invoke(self.connect_)
 
+
+    # @commands.command(name='loop')
+    # async def loop_(self, ctx: commands.Context):
+    #     """Loops the currently playing song.
+    #     Invoke this command again to unloop the song.
+    #     """
+    #     global loop
+
+    #     if loop:
+    #         await ctx.message.add_reaction('✅')
+    #         await ctx.send('Loop mode is now `disabled.`')
+    #         loop = False
+
+    #     else:
+    #         await ctx.send('Loop mode is now `enabled.`')
+    #         loop = True
+
+        # Inverse boolean value to loop and unloop.
+        # ctx.voice_state.loop = not ctx.voice_state.loop
+        # await ctx.message.add_reaction('✅')
+
     @commands.command(name='play', aliases=['sing', 'p'], description="streams music")
     async def play_(self, ctx, *, search: str):
         """Request a song and add it to the queue.
@@ -326,6 +351,14 @@ class Music(commands.Cog):
         source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop, download=False)
 
         await player.queue.put(source)
+
+        # while loop == True:
+        #         await player.queue.put(source)
+        #         continue
+
+        # while loop == False:
+        #         break
+
 
     @commands.command(name='pause', description="pauses music")
     async def pause_(self, ctx):
@@ -408,6 +441,7 @@ class Music(commands.Cog):
     @commands.command(name='clear', aliases=['clr', 'cl', 'cr'], description="clears entire queue")
     async def clear_(self, ctx):
         """Deletes entire queue of upcoming songs."""
+        global stop
 
         vc = ctx.voice_client
 
@@ -419,7 +453,9 @@ class Music(commands.Cog):
 
         player = self.get_player(ctx)
         player.queue._queue.clear()
-        await ctx.message.reply('💣 **Cleared**', mention_author = False)
+
+        if stop == False:
+            await ctx.message.reply('💣 **Cleared the queue**', mention_author = False)
 
     @commands.command(name='queue', aliases=['q', 'playlist', 'que'], description="shows the queue")
     async def queue_info(self, ctx):
@@ -529,7 +565,28 @@ class Music(commands.Cog):
             title="", description=f'**`{ctx.author}`** set the volume to **{vol}%**', color=discord.Color(clr))
         await ctx.send(embed=embed)
 
-    @commands.command(name='leave', aliases=["stop", "dc", "disconnect", "bye"], description="stops music and disconnects from voice")
+    @commands.command(name='stop', description="stops the currently playing music and clears the queue")
+    async def stop_(self, ctx):
+        global stop
+        clr = 14471423
+        vc = ctx.voice_client
+        
+        if not vc or not vc.is_connected():
+            embed = discord.Embed(
+                title="", description="I'm not connected to a voice channel", color=discord.Color(clr))
+            return await ctx.send(embed=embed)
+        
+        else:
+            stop = True
+
+            await ctx.invoke(self.skip_)
+            await ctx.invoke(self.clear_)
+            await ctx.message.reply('**Stopped all music from playing and** 💣 **Cleared the queue.**', mention_author = False)
+
+            stop = False
+
+
+    @commands.command(name='leave', aliases=["dc", "disconnect", "bye"], description="stops music and disconnects from voice")
     async def leave_(self, ctx):
         """Stop the currently playing song and destroy the player.
         !Warning!

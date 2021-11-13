@@ -102,9 +102,29 @@ async def on_guild_remove(guild):
 
     await conn.close()
 
+@bot.command(name='sus', aliases=['sussy', 's'], description="sus")
+async def sus_(ctx):
+
+    clr = 14471423
+    embed = discord.Embed(
+        title = '**s U s**',
+        description = 'sUs t0wn: https://goo.gl/maps/xEt6v4GpBBqPyREd6 \n sUsSy vIdEo: https://youtu.be/CK69zfhGtE8 \n sUsSy wEbSitE: https://amogus.heliohost.us',
+        colour = discord.Colour(clr)
+    )
+    embed.set_footer(text = 'Copyright © s U s t 0 w n 2021')
+    embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/821622025176481794/860479401762619412/video.gif')
+
+    await ctx.send(embed = embed)
+
 @bot.command(name = 'StringToBinary', aliases=['stb'], description="Converts the given string into binary.")
 async def stb_(ctx, *, arg):
     await ctx.send (StringToBinary_obj.string_binary(arg))
+
+#Incomplete, does not work many times.
+# @bot.command(name = 'ChangeChannelName', aliases=['cc'], description="Changes the name of a text channel to a random name.")
+# async def ccn_(ctx):
+#     channel = ctx.message.channel_id
+#     await channel.edit(name = "testpassed")
 
 # Loading Cogs
 @bot.command()
@@ -140,11 +160,11 @@ async def on_ready():
 @tasks.loop(seconds = 15)
 async def ch_pr():
 
-    statuses = ["Do not watch!!", "ඞ Amogus Drip ඞ", "ඞ sUssy Drip ඞ", "ඞ sUs t0wn ඞ", "Pls don't watch!", "Idek at this point..", "monke!!!!!"]
+    statuses = ["Do not watch!!", "ඞ Amogus Drip ඞ", "ඞ sUssy Drip ඞ", "ඞ sUs t0wn ඞ", "Pls don't watch!", "Idek at this point..", "monke!!!!!", "O̶͊̽m̷̾͌ơ̷̑s̸͒̕h̶͙̄ȋ̷̊r̶̄́ỏ̵̓i̵̔̅.̶͂̏.̴̛̾.̶͌̌.̴͒̚"]
 
-    urls = [f"https://www.youtube.com/watch?v=dQw4w9WgXcQ", f"https://www.youtube.com/watch?v=T59N3DPrvac", f"https://www.youtube.com/watch?v=8-NcrRzH0vA", f"https://www.youtube.com/watch?v=CK69zfhGtE8", f"https://www.youtube.com/watch?v=fC7oUOUEEi4", f"https://www.youtube.com/watch?v=OL52lvx5P9I", f"https://www.youtube.com/watch?v=qQhfjqMa6pg"]
+    urls = [f"https://www.youtube.com/watch?v=dQw4w9WgXcQ", f"https://www.youtube.com/watch?v=T59N3DPrvac", f"https://www.youtube.com/watch?v=8-NcrRzH0vA", f"https://www.youtube.com/watch?v=CK69zfhGtE8", f"https://www.youtube.com/watch?v=fC7oUOUEEi4", f"https://www.youtube.com/watch?v=OL52lvx5P9I", f"https://www.youtube.com/watch?v=qQhfjqMa6pg", f"https://www.youtube.com/watch?v=UJd8a9fxncE"]
 
-    index = randbelow(7)
+    index = randbelow(8)
 
     statuspr = statuses[index]
     urlpr = urls[index]
