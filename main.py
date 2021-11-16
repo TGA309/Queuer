@@ -102,34 +102,19 @@ async def on_guild_remove(guild):
 
     await conn.close()
 
-@bot.command(name='sus', aliases=['sussy', 's'], description="sus")
-async def sus_(ctx):
-
-    clr = 14471423
-    embed = discord.Embed(
-        title = '**s U s**',
-        description = 'sUs t0wn: https://goo.gl/maps/xEt6v4GpBBqPyREd6 \n sUsSy vIdEo: https://youtu.be/CK69zfhGtE8 \n sUsSy wEbSitE: https://amogus.heliohost.us',
-        colour = discord.Colour(clr)
-    )
-    embed.set_footer(text = 'Copyright © s U s t 0 w n 2021')
-    embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/821622025176481794/860479401762619412/video.gif')
-
-    await ctx.send(embed = embed)
-
 @bot.command(name = 'StringToBinary', aliases=['stb'], description="Converts the given string into binary.")
 async def stb_(ctx, *, arg):
+    """Converts the given string into binary."""
     await ctx.send (StringToBinary_obj.string_binary(arg))
-
-#Incomplete, does not work many times.
-# @bot.command(name = 'ChangeChannelName', aliases=['cc'], description="Changes the name of a text channel to a random name.")
-# async def ccn_(ctx):
-#     channel = ctx.message.channel_id
-#     await channel.edit(name = "testpassed")
 
 # Loading Cogs
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def load(ctx, extension):
+    """Command to load cogs.
+    
+       Need administrative permissions to use.   
+    """
     bot.load_extension(f'cogs.{extension}')
     print ("Loaded Cogs")
 
@@ -137,12 +122,20 @@ async def load(ctx, extension):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def unload(ctx, extension):
+    """Command to unload cogs.
+    
+       Need administrative permissions to use.   
+    """
     bot.unload_extension(f'cogs.{extension}')
     print ("Unoaded Cogs")
 
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def reload(ctx, extension):
+    """Command to reload cogs.
+    
+       Need administrative permissions to use.   
+    """
     bot.unload_extension(f'cogs.{extension}')
     bot.load_extension(f'cogs.{extension}')
     print ("Reloaded Cogs")

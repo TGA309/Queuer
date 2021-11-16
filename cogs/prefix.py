@@ -7,9 +7,13 @@ class prefix(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['prefix'])
+    @commands.command(name='changeprefix', aliases=['prefix'], description="helps to change the bot prefix")
     @commands.has_permissions(administrator=True)
     async def changeprefix_(self, ctx, prefix):
+        """Changes the bot's prefix.
+        Note:-
+            The prefix can only be one character long.
+        """
 
         DATABASE_URL = os.environ['DATABASE_URL']
 

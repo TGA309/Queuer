@@ -13,8 +13,6 @@ import youtube_dl
 from youtube_dl import YoutubeDL
 from main import bot
 
-#loop = False
-
 stop = False
 
 # Suppress noise about console usage from errors
@@ -287,6 +285,12 @@ class Music(commands.Cog):
 
     @commands.command(name='move', aliases=['summon'], description="Moves the bot to the user's current voice/stage channel")
     async def move_(self, ctx, *, channel: discord.VoiceChannel = None):
+        """Moves the bot to the user's current voice/stage channel.
+        
+        Note:-
+              If the channel parameter is missing then it will move to user's currentntly connected channel.
+              When the bot moves to another channel, the queue is cleared and the player is destroyed.
+        """
 
         channel = ctx.author.voice.channel
         vc = ctx.voice_client
@@ -304,27 +308,6 @@ class Music(commands.Cog):
             else:
                 await ctx.invoke(self.leave_)
                 await ctx.invoke(self.connect_)
-
-
-    # @commands.command(name='loop')
-    # async def loop_(self, ctx: commands.Context):
-    #     """Loops the currently playing song.
-    #     Invoke this command again to unloop the song.
-    #     """
-    #     global loop
-
-    #     if loop:
-    #         await ctx.message.add_reaction('✅')
-    #         await ctx.send('Loop mode is now `disabled.`')
-    #         loop = False
-
-    #     else:
-    #         await ctx.send('Loop mode is now `enabled.`')
-    #         loop = True
-
-        # Inverse boolean value to loop and unloop.
-        # ctx.voice_state.loop = not ctx.voice_state.loop
-        # await ctx.message.add_reaction('✅')
 
     @commands.command(name='play', aliases=['sing', 'p'], description="streams music")
     async def play_(self, ctx, *, search: str):
@@ -351,14 +334,6 @@ class Music(commands.Cog):
         source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop, download=False)
 
         await player.queue.put(source)
-
-        # while loop == True:
-        #         await player.queue.put(source)
-        #         continue
-
-        # while loop == False:
-        #         break
-
 
     @commands.command(name='pause', description="pauses music")
     async def pause_(self, ctx):
@@ -394,7 +369,7 @@ class Music(commands.Cog):
 
     @commands.command(name='skip', description="skips to next song in queue")
     async def skip_(self, ctx):
-        """Skip the song."""
+        """Skips the song."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
@@ -531,7 +506,7 @@ class Music(commands.Cog):
 
     @commands.command(name='volume', aliases=['vol', 'v'], description="changes Queuer's volume")
     async def change_volume(self, ctx, *, vol: float =None):
-        """Change the player volume.
+        """Changes Queuer's volume.
         Parameters
         ------------
         volume: float or int [Required]
@@ -565,8 +540,9 @@ class Music(commands.Cog):
             title="", description=f'**`{ctx.author}`** set the volume to **{vol}%**', color=discord.Color(clr))
         await ctx.send(embed=embed)
 
-    @commands.command(name='stop', description="stops the currently playing music and clears the queue")
+    @commands.command(name='stop', description="stops the currently playing song and clears the queue")
     async def stop_(self, ctx):
+        """Stops the currently playing song and clears the queue."""
         global stop
         clr = 14471423
         vc = ctx.voice_client
@@ -588,7 +564,7 @@ class Music(commands.Cog):
 
     @commands.command(name='leave', aliases=["dc", "disconnect", "bye"], description="stops music and disconnects from voice")
     async def leave_(self, ctx):
-        """Stop the currently playing song and destroy the player.
+        """Stops the currently playing song and destroys the player.
         !Warning!
             This will destroy the player assigned to your guild, also deleting any queued songs and settings.
         """
@@ -607,6 +583,7 @@ class Music(commands.Cog):
 
     @commands.command(name='ping', aliases=['latency'], description="Shows bot latency.")
     async def ping_(self, ctx):
+        """Shows the bot's ping."""
         await ctx.message.reply(f'My ping is {round(bot.latency * 1000)}ms', mention_author = False)
 
 
