@@ -49,7 +49,7 @@ async def on_message(msg):
 
     if msg.guild is None:
         if isinstance(msg.channel, discord.channel.DMChannel) and msg.author != bot.user:
-            await msg.channel.send("Nothing works in DMs.... :))")
+            await msg.channel.send("Commands do not work in DMs.")
 
     else:
         try:
@@ -85,9 +85,18 @@ async def on_guild_join(guild):
 
     conn = await asyncpg.connect(DATABASE_URL, ssl = 'require')
 
+    await conn.execute("DELETE FROM serverprefixes WHERE id = $1", gid)
     await conn.execute("INSERT INTO serverprefixes (id, prefix) VALUES ($1, '~')", gid)
 
     await conn.close()
+    
+    for channel in guild.text_channels:
+        
+        if channel.permissions_for(guild.me).send_messages:
+            
+            await channel.send('Hey there! Type `~help` to get started with the bot.')
+            
+        break
 
 @bot.event
 async def on_guild_remove(guild):
