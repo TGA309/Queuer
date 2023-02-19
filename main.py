@@ -173,4 +173,4 @@ async def ch_pr():
 
     await bot.change_presence(activity = discord.Streaming(name = statuspr, url = urlpr, platform = "YouTube"))
 
-bot.run('NzQ3MTUwNTg4ODgxNjY2MTM4.X0KsNQ.oYa_nUgfgi509ZD4wn1J7ZiLqY8')
+bot.run('<YourBotToken>')
